@@ -2,6 +2,8 @@ const express = require("express");
 // const mongoose = require("mongoose");
 // mongoose.set("strictQuery", false);
 const app = express();
+const { connectDatabase } = require("./connection/file");
+const User_Model = require("./models/User");
 app.use(express.json());
 
 // const connectDatabase = () => {
@@ -14,9 +16,20 @@ app.use(express.json());
 //   }
 // };
 
-app.post("/api/savedata", (req, res) => {
+app.post("/api/savedata", async (req, res) => {
   try {
-    console.log(req.body.name);
+    // console.log(req.body);
+    const newObject = {
+      name: req.body.username,
+      rollno: req.body.userRollno,
+      branch: req.body.userBranch,
+      age: req.body.userAge,
+      isFresher: req.body.fresher,
+    };
+    const userData = new User_Model(newObject);
+    await userData.save();
+
+    // console.log(newObject);
     return res.json({ success: true, message: "Data saved Succesfully" });
   } catch (error) {
     console.log(error);
@@ -31,7 +44,7 @@ app.post("/api/savedata", (req, res) => {
 // for each collection,one model is made in the server ,inside models
 // folder models folder contain all the models which are to be used in DB.
 
-const { connectDatabase } = require("./file");
+// const { connectDatabase } = require("./file");
 const a = connectDatabase();
 console.log(a);
 const PORT = 6000;
