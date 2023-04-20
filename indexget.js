@@ -16,7 +16,7 @@ app.get("/studentdata/:id/:branch", (req, res) => {
     let userid = parseInt(req.params.id);
     console.log(userid);
     let branch = req.params.branch;
-    console.log("branch");
+    console.log(branch);
     let student = [
       { id: 1, name: "rani", batch: 23, state: "up", branch: "ece" },
       { id: 2, name: "anjali", batch: 23, state: "up", branch: "ece" },
@@ -29,7 +29,7 @@ app.get("/studentdata/:id/:branch", (req, res) => {
       { id: 1, name: "princi", batch: 23, state: "tamil nadu", branch: "ee" },
     ];
     const user = student.find((a) => {
-      console.log(a);
+      // console.log(a);
       return a.id === userid && a.branch === branch;
     });
     if (user) {
@@ -135,9 +135,9 @@ app.get("/studentdata/:id/:branch", (req, res) => {
 // app.get("/photos", (req, res) => {
 //   return res.json({ message: "photos" });
 // });
-app.get("/users", (req, res) => {
-  return res.json({ message: "users" });
-});
+// app.get("/users", (req, res) => {
+//   return res.json({ message: "users" });
+// });
 // app.get("/friends", (req, res) => {
 //   return res.json({ message: "Anjali,Princi,Avanika,Sania,Aastha" });
 // });
