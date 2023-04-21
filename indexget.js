@@ -11,36 +11,36 @@ const app = express();
 // catches error of the try block just in case if any
 // this is also a
 
-app.get("/studentdata/:id/:branch", (req, res) => {
-  try {
-    let userid = parseInt(req.params.id);
-    console.log(userid);
-    let branch = req.params.branch;
-    console.log(branch);
-    let student = [
-      { id: 1, name: "rani", batch: 23, state: "up", branch: "ece" },
-      { id: 2, name: "anjali", batch: 23, state: "up", branch: "ece" },
-      { id: 1, name: "aastha", batch: 23, state: "ap", branch: "me" },
-      { id: 2, name: "aastha", batch: 23, state: "ap", branch: "me" },
-      { id: 3, name: "aastha", batch: 23, state: "ap", branch: "me" },
-      { id: 1, name: "anjali", batch: 23, state: "mp", branch: "ce" },
-      { id: 2, name: "anjali", batch: 23, state: "mp", branch: "ce" },
-      { id: 3, name: "anjali", batch: 23, state: "mp", branch: "ce" },
-      { id: 1, name: "princi", batch: 23, state: "tamil nadu", branch: "ee" },
-    ];
-    const user = student.find((a) => {
-      // console.log(a);
-      return a.id === userid && a.branch === branch;
-    });
-    if (user) {
-      return res.json({ message: user, success: true });
-    } else {
-      return res.json({ message: "not found", success: false });
-    }
-  } catch (error) {
-    return res.status(400).json({ success: false, error: error.message });
-  }
-});
+// app.get("/studentdata/:id/:branch", (req, res) => {
+//   try {
+//     let userid = parseInt(req.params.id);
+//     console.log(userid);
+//     let branch = req.params.branch;
+//     console.log(branch);
+//     let student = [
+//       { id: 1, name: "rani", batch: 23, state: "up", branch: "ece" },
+//       { id: 2, name: "anjali", batch: 23, state: "up", branch: "ece" },
+//       { id: 1, name: "aastha", batch: 23, state: "ap", branch: "me" },
+//       { id: 2, name: "aastha", batch: 23, state: "ap", branch: "me" },
+//       { id: 3, name: "aastha", batch: 23, state: "ap", branch: "me" },
+//       { id: 1, name: "anjali", batch: 23, state: "mp", branch: "ce" },
+//       { id: 2, name: "anjali", batch: 23, state: "mp", branch: "ce" },
+//       { id: 3, name: "anjali", batch: 23, state: "mp", branch: "ce" },
+//       { id: 1, name: "princi", batch: 23, state: "tamil nadu", branch: "ee" },
+//     ];
+//     const user = student.find((a) => {
+//       // console.log(a);
+//       return a.id === userid && a.branch === branch;
+//     });
+//     if (user) {
+//       return res.json({ message: user, success: true });
+//     } else {
+//       return res.json({ message: "not found", success: false });
+//     }
+//   } catch (error) {
+//     return res.status(400).json({ success: false, error: error.message });
+//   }
+// });
 // app.get("/api/info/rani", (req, res) => {
 //   try {
 //     let students = [{ id: 1, name: "rani", batch: 23, state: "up" }];
@@ -135,9 +135,14 @@ app.get("/studentdata/:id/:branch", (req, res) => {
 // app.get("/photos", (req, res) => {
 //   return res.json({ message: "photos" });
 // });
-// app.get("/users", (req, res) => {
-//   return res.json({ message: "users" });
-// });
+app.get("/users", async(req, res) => {
+  try {
+    const usersData=await booking.find();
+    return res.json({success:true,data:usersData});
+  } catch (error) {
+    return res.status(401).json({success:false,error:error.message});
+  }
+});
 // app.get("/friends", (req, res) => {
 //   return res.json({ message: "Anjali,Princi,Avanika,Sania,Aastha" });
 // });

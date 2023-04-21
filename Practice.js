@@ -17,7 +17,14 @@ app.post("/api/actors", async (req, res) => {
     return res.status(401).json({ success: false, error: error.message });
   }
 });
-
+app.get("/users", async (req, res) => {
+  try {
+    const usersData = await actorModel.find();
+    return res.json({ success: true, data: usersData });
+  } catch (error) {
+    return res.status(401).json({ success: false, error: error.message });
+  }
+});
 app.get("/user_data/:user_id", (req, res) => {
   try {
     let userid = parseInt(req.params.user_id);

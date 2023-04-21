@@ -30,6 +30,8 @@ app.post("/api/booking", async (req, res) => {
     return res.status(401).json({ success: false, error: error.message });
   }
 });
+
+app.get;
 app.post("/api/customersdata", async (req, res) => {
   try {
     const newObject1 = {
