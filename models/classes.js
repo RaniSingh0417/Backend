@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  classID: Number,
-  courseCode: String,
-  dayOfWeek: String,
-  timeStart: String,
-  teacherID: Number,
-});
+const userSchema = new mongoose.Schema(
+  {
+    classID: Number,
+    courseCode: String,
+    dayOfWeek: String,
+    timeStart: String,
+    teacherID: Number,
+  },
+  { timestamps: true }
+);
 
 const classModel = mongoose.model("classes", userSchema);
 module.exports = classModel;

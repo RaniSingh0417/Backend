@@ -4,6 +4,7 @@ const { connectDatabase } = require("./connection/file");
 const classModel = require("./models/classes");
 const projectModel = require("./models/Project");
 const teacherModel = require("./models/Teachers");
+const booksModel = require("./models/books");
 app.use(express.json());
 
 app.post("/api/classes", async (req, res) => {
@@ -30,6 +31,14 @@ app.get("/classes", async (req, res) => {
     return res.status(401).json({ success: false, error: error.message });
   }
 });
+// app.get("/classes", async (req, res) => {
+//   try {
+//     const sortedData = await classModel.find().sort({ createdAt: -1 }).limit(2);
+//     return res.json({ success: true, data: sortedData });
+//   } catch (error) {
+//     return res.status(401).json({ success: false, error: error.message });
+//   }
+// });
 
 app.post("/api/teachers", async (req, res) => {
   try {
@@ -77,6 +86,68 @@ app.get("/projectdetail", async (req, res) => {
     return res.json({ success: true, data: userData });
   } catch (error) {
     return res.status(401).json({ success: false, error: error.message });
+  }
+});
+
+app.post("/api/books", async (req, res) => {
+  try {
+    const newObject = {
+      book_id: req.body.bookId,
+      title: req.body.book_title,
+      totalPages: req.body.pageCount,
+      rating: req.body.book_rating,
+      published_Date: req.body.publi_date,
+      publisher_id: req.body.publi_id,
+    };
+    const booksData = new booksModel(newObject);
+    await booksData.save();
+    return res.json({ success: true, message: "data saved successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+app.get("/books", async (req, res) => {
+  try {
+    const books_Details = await booksModel.find();
+    return res.json({ success: true, data: books_Details });
+  } catch (error) {
+    console.log(error);
+    return res.status.json({ success: false, error: error.message });
+  }
+});
+
+app.get("/books/latestentry", async (req, res) => {
+  try {
+    const books_Details = await booksModel.find().sort({ createdAt: -1 }); //-1 for descendind order and 1 for ascending
+    return res.json({ success: true, data: books_Details });
+  } catch (error) {
+    console.log(error);
+    return res.status.json({ success: false, error: error.message });
+  }
+});
+
+app.get("/books/twobooks", async (req, res) => {
+  try {
+    const books_Details = await booksModel.find().limit(2);
+    return res.json({ success: true, data: books_Details });
+  } catch (error) {
+    console.log(error);
+    return res.status.json({ success: false, error: error.message });
+  }
+});
+
+app.get("/books/latestthreebooks", async (req, res) => {
+  try {
+    const books_Details = await booksModel
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(3);
+    return res.json({ success: true, data: books_Details });
+  } catch (error) {
+    console.log(error);
+    return res.status.json({ success: false, error: error.message });
   }
 });
 
