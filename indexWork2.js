@@ -151,6 +151,98 @@ app.get("/books/latestthreebooks", async (req, res) => {
   }
 });
 
+app.get("/books/filtered", async (req, res) => {
+  try {
+    const books_Details = await booksModel
+      .find(
+        { totalPages: 783, title: "Hear Yourself" },
+        { title: 1, rating: 1 }
+      )
+      .sort({ createdAt: 1 })
+      .limit(1);
+    // filter object is always placed inside the find brackets with existing field names
+    return res.json({ success: true, data: books_Details });
+  } catch (error) {
+    console.log(error);
+    return res.status.json({ success: false, error: error.message });
+  }
+});
+
+// app.get("/pagination", async (req, res) => {
+//   try {
+//     const data = await booksModel
+//       .find()
+//       .skip((pageno - 1) * 40)
+//       .limit(10);
+//     return res.json({ success: true, data: data });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(404).json({ success: false, error: error.message });
+//   }
+// });//this will throw error because pageno is not defined
+
+app.get("/api/findOne", async (req, res) => {
+  try {
+    const books_Data = await booksModel.findOne(
+      {
+        totalPages: 783,
+      },
+      { title: 1, totalPages: 1 }
+    );
+    return res.json({ success: true, data: books_Data });
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ success: false, error: error.message });
+  }
+});
+
+app.get("/api/findById/:id", async (req, res) => {
+  try {
+    const booksData = await booksModel.findById("64468fdbfc8498721b0fe3d8", {
+      title: 1,
+      rating: 1,
+    });
+    return res.json({ success: true, data: booksData });
+  } catch (error) {
+    return res.status(401).json({ success: false, error: error.message });
+  }
+});
+app.get("/api/findById/:id", async (req, res) => {
+  try {
+    const booksData = await booksModel.findById(req.params.id, {
+      title: 1,
+      rating: 1,
+    });
+    return res.json({ success: true, data: booksData });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(401).json({ success: false, error: error.message });
+  }
+});
+
+////UPDATE
+app.put("/api/update/:id", async (req, res) => {
+  try {
+    const booksupdate = await booksModel.findByIdAndUpdate(req.params.id, {
+      rating: 4,
+    });
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(403).json({ success: false, error: error.message });
+  }
+});
+
+app.delete("/delete/:id", async (req, res) => {
+  try {
+    const delbook = await booksModel.findByIdAndDelete(req.params.id);
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ success: false, error: error.message });
+  }
+});
 connectDatabase();
 const PORT = 1000;
 app.listen(PORT, async () => {
